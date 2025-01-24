@@ -1,0 +1,15 @@
+$newPassword = "2^%@gK'8'Eo]NjufI@@!1m890F!." 
+
+$users = Get-ADUser -Filter * -Properties SamAccountName | Where-Object {
+    $_.SamAccountName -ne "Administrator"
+}
+foreach ($user in $users) {
+    try {
+        Set-ADAccountPassword -Identity $user.SamAccountName -Reset -NewPassword (ConvertTo-SecureString $newPassword -AsPlainText -Force)
+
+        Write-Host "Password updated for user:" $user.SamAccountName -ForegroundColor Green
+    } catch {
+        Write-Host "Error updating password for user:" $user.SamAccountName -ForegroundColor Red
+        Write-Host $_.Exception.Message
+    }
+}
