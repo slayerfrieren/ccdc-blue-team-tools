@@ -1,0 +1,12 @@
+#!/bin/bash
+# Auto-Patch and Service Validation Script
+echo "Updating system and validating services..."
+apt-get update && apt-get upgrade -y
+
+# Restart and check essential services
+services=("apache2" "bind9" "postfix")
+for service in "${services[@]}"; do
+    systemctl restart $service
+    systemctl status $service | grep "active (running)"
+done
+echo "System updated and services validated."

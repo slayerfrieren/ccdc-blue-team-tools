@@ -1,0 +1,7 @@
+#!/bin/bash
+# AIDE Setup Script
+echo "Installing and Initializing AIDE..."
+apt-get install aide -y
+aide --init
+mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
+echo "AIDE initialized. Run 'aide --check' to verify integrity."

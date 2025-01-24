@@ -1,0 +1,17 @@
+#!/bin/bash
+# Splunk Forwarder Setup Script
+echo "Installing Splunk Universal Forwarder..."
+wget -O splunkforwarder.tgz 'https://download.splunk.com/products/universalforwarder/releases/9.0.0/linux/splunkforwarder-9.0.0.tgz'
+tar -xvzf splunkforwarder.tgz
+cd splunkforwarder/bin
+./splunk start --accept-license
+
+# Connect to Splunk server
+./splunk add forward-server <splunk_server_ip>:9997
+./splunk enable boot-start
+
+# Monitor log files
+./splunk add monitor /var/log
+./splunk add monitor /var/log/apache2/access.log
+./splunk add monitor /var/log/auth.log
+echo "Splunk forwarder configured and logs added for monitoring."

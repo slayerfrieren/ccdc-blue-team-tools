@@ -1,0 +1,7 @@
+#!/bin/bash
+# Dynamic IP Blocking Script
+echo "Monitoring logs for suspicious IPs..."
+tail -f /var/log/auth.log | grep "Failed password" | awk '{print $11}' | while read ip; do
+    echo "Blocking suspicious IP: $ip"
+    iptables -A INPUT -s $ip -j DROP
+done

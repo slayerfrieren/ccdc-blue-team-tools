@@ -1,0 +1,10 @@
+#!/bin/bash
+# Log Monitoring and Incident Response Script
+echo "Monitoring logs for incidents..."
+while true; do
+    echo "==== Recent Auth Logs ===="
+    tail -n 20 /var/log/auth.log
+    echo "==== Active Connections ===="
+    netstat -tuln
+    sleep 60
+done

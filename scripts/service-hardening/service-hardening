@@ -1,0 +1,21 @@
+#!/bin/bash
+# Service Hardening Script
+
+# Apache/Nginx Hardening
+echo "Hardening Web Server..."
+rm -rf /var/www/html/*
+echo "<h1>Service is Operational</h1>" > /var/www/html/index.html
+sed -i 's/Options Indexes/Options -Indexes/' /etc/apache2/apache2.conf
+systemctl restart apache2
+
+# DNS Hardening
+echo "Hardening DNS Server..."
+sed -i '/options {/a \ \ \ \ recursion no;' /etc/bind/named.conf.options
+sed -i '/zone "/a \ \ \ \ allow-transfer { none; };' /etc/bind/named.conf.local
+systemctl restart bind9
+
+# Postfix Hardening
+echo "Hardening Mail Server..."
+postconf -e "smtpd_recipient_restrictions=permit_mynetworks, reject_unauth_destination"
+systemctl restart postfix
+echo "Critical services hardened."

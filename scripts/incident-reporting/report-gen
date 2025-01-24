@@ -1,0 +1,11 @@
+#!/bin/bash
+# Incident Report Generator Script
+echo "Generating Incident Report..."
+report="incident_report_$(date +%Y%m%d_%H%M%S).txt"
+echo "==== Incident Report ====" >> $report
+echo "Timestamp: $(date)" >> $report
+echo "Failed Logins:" >> $report
+grep "Failed password" /var/log/auth.log | awk '{print $1, $2, $3, $11}' >> $report
+echo "Active Connections:" >> $report
+netstat -tuln >> $report
+echo "Report saved to $report."

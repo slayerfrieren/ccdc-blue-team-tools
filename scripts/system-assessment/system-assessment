@@ -1,0 +1,17 @@
+#!/bin/bash
+# Initial System Assessment Script
+echo "===== System Inventory ====="
+echo "Hostname:"
+hostname
+echo "IP Addresses:"
+ip addr
+echo "Routes:"
+ip route
+echo "Running Services:"
+systemctl list-units --type=service
+echo "Active Network Connections:"
+netstat -tuln
+echo "Recent Authentication Logs:"
+tail -n 20 /var/log/auth.log
+echo "Firewall Rules:"
+ufw status
