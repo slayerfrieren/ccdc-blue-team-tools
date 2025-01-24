@@ -1,0 +1,22 @@
+New-NetFirewallRule -DisplayName "Allow RDP for Docker Server" -Direction Inbound -Protocol TCP -LocalPort 3389 -RemoteAddress 172.20.242.200 -Action Allow New-NetFirewallRule -DisplayName "Allow Docker Remote Access" -Direction Inbound -Protocol TCP -LocalPort 2375 -RemoteAddress 172.20.240.0/24 -Action Allow
+
+New-NetFirewallRule -DisplayName "Allow DNS UDP" -Direction Inbound -Protocol UDP -LocalPort 53 -RemoteAddress 172.20.242.0/24,172.20.240.0/24 -Action Allow New-NetFirewallRule -DisplayName "Allow DNS TCP" -Direction Inbound -Protocol TCP -LocalPort 53 -RemoteAddress 172.20.242.0/24,172.20.240.0/24 -Action Allow New-NetFirewallRule -DisplayName "Allow NTP" -Direction Inbound -Protocol UDP -LocalPort 123 -RemoteAddress 172.20.242.0/24,172.20.240.0/24 -Action Allow
+
+New-NetFirewallRule -DisplayName "Allow HTTP" -Direction Inbound -Protocol TCP -LocalPort 80 -RemoteAddress 172.20.241.0/24 -Action Allow New-NetFirewallRule -DisplayName "Allow HTTPS" -Direction Inbound -Protocol TCP -LocalPort 443 -RemoteAddress 172.20.241.0/24 -Action Allow
+
+New-NetFirewallRule -DisplayName "Allow AD DNS UDP" -Direction Inbound -Protocol UDP -LocalPort 53 -RemoteAddress 172.20.240.0/24,172.20.242.0/24 -Action Allow New-NetFirewallRule -DisplayName "Allow AD DNS TCP" -Direction Inbound -Protocol TCP -LocalPort 53 -RemoteAddress 172.20.240.0/24,172.20.242.0/24 -Action Allow New-NetFirewallRule -DisplayName "Allow DHCP" -Direction Inbound -Protocol UDP -LocalPort 67,68 -RemoteAddress 172.20.242.0/24 -Action Allow
+
+New-NetFirewallRule -DisplayName "Allow Splunk Web UI" -Direction Inbound -Protocol TCP -LocalPort 8000 -RemoteAddress 172.20.240.0/24,172.20.242.0/24 -Action Allow
+
+New-NetFirewallRule -DisplayName "Allow HTTP for E-Commerce" -Direction Inbound -Protocol TCP -LocalPort 80 -RemoteAddress 172.20.241.0/24 -Action Allow New-NetFirewallRule -DisplayName "Allow HTTPS for E-Commerce" -Direction Inbound -Protocol TCP -LocalPort 443 -RemoteAddress 172.20.241.0/24 -Action Allow
+
+New-NetFirewallRule -DisplayName "Allow Webmail HTTP" -Direction Inbound -Protocol TCP -LocalPort 80 -RemoteAddress 172.20.241.0/24 -Action Allow New-NetFirewallRule -DisplayName "Allow Webmail HTTPS" -Direction Inbound -Protocol TCP -LocalPort 443 -RemoteAddress 172.20.241.0/24 -Action Allow
+
+New-NetFirewallRule -DisplayName "Allow Palo Alto Admin HTTPS" -Direction Inbound -Protocol TCP -LocalPort 443 -RemoteAddress 172.20.242.200 -Action Allow
+
+Set-NetFirewallRule -DisplayName "*SMB*" -Direction Inbound -Action Block
+Set-NetFirewallRule -DisplayName "*NetBIOS*" -Direction Inbound -Action Block
+
+New-NetFirewallRule -DisplayName "Block LDAP (Unencrypted)" -Direction Inbound -Protocol TCP -LocalPort 389 -RemoteAddress Any -Action Block
+
+New-NetFirewallRule -DisplayName "Block Global Catalog (Unencrypted)" -Direction Inbound -Protocol TCP -LocalPort 3268 -RemoteAddress Any -Action Block
