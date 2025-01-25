@@ -1,0 +1,31 @@
+# Disk Space Monitoring Script
+# Alerts at 50%, 80%, and 90% utilization thresholds
+
+# Log Configuration
+$logFile = "C:\Logs\DiskSpaceAlerts.log"
+
+# Function to log alerts
+Function Log-Alert {
+    param (
+        [string]$Drive,
+        [int]$PercentUsed
+    )
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "$timestamp - ALERT: Drive $Drive has reached $PercentUsed% utilization."
+    Add-Content -Path $logFile -Value $logEntry
+}
+
+# Get drive information
+$drives = Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Used -gt 0 }
+
+foreach ($drive in $drives) {
+    $usedSpace = ($drive.Used / $drive.Size) * 100
+    
+    if ($usedSpace -ge 90) {
+        Log-Alert -Drive $drive.Name -PercentUsed [math]::Round($usedSpace)
+    } elseif ($usedSpace -ge 80) {
+        Log-Alert -Drive $drive.Name -PercentUsed [math]::Round($usedSpace)
+    } elseif ($usedSpace -ge 50) {
+        Log-Alert -Drive $drive.Name -PercentUsed [math]::Round($usedSpace)
+    }
+}

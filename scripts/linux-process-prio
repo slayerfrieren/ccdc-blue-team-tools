@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Function to display current processes and their priorities
+view_processes() {
+    echo "\nCurrent Processes and Their Priorities:\n"
+    ps -eo pid,comm,nice --sort=-nice | head -n 20
+}
+
+# Function to change the priority of a process
+change_priority() {
+    echo -n "\nEnter the PID of the process: "
+    read pid
+    echo -n "Enter the new priority (nice value between -20 and 19): "
+    read priority
+
+    if [[ $priority -ge -20 && $priority -le 19 ]]; then
+        sudo renice $priority -p $pid
+        echo "Priority of process $pid changed to $priority."
+    else
+        echo "Invalid priority value. Must be between -20 and 19."
+    fi
+}
+
+# Main menu
+while true; do
+    echo "\nProcess Priority Manager"
+    echo "1. View Current Processes and Their Priorities"
+    echo "2. Change the Priority of a Process"
+    echo "3. Exit"
+    echo -n "Choose an option: "
+
+    read option
+
+    case $option in
+        1)
+            view_processes
+            ;;
+        2)
+            change_priority
+            ;;
+        3)
+            echo "Exiting..."
+            break
+            ;;
+        *)
+            echo "Invalid option. Please try again."
+            ;;
+    esac
+
+done
