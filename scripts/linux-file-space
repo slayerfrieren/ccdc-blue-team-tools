@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Define the threshold percentage (adjustable)
+THRESHOLD=80
+
+# Get the current disk usage percentage for root filesystem
+DISK_USAGE=$(df / | grep / | awk '{ print $5 }' | sed 's/%//')
+
+# Check if disk usage exceeds the threshold
+if [ "$DISK_USAGE" -gt "$THRESHOLD" ]; then
+    # Log a message to syslog
+    logger -p syslog.warning "Disk usage exceeded threshold: ${DISK_USAGE}% used, threshold is ${THRESHOLD}%"
+fi
